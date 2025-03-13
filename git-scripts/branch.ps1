@@ -1,49 +1,46 @@
-# Lazy load commit function
-$LazyCommitFunction = {
-    function commit {
+# Lazy load branch function
+$LazyBranchFunction = {
+    function branch {
         param (
-            [string]$message,
-            [string]$flags = ""
+            [string]$param
         )
 
-        # If no message is provided, prompt the user to enter one
-        if (-not $message) {
-            $message = Read-Host "Please enter a commit message"
-        }
-
-        # Stage all changes
-        git add .
-
-        # Ensure git add was successful
-        if ($?) {
-            Write-Host "Files staged successfully" -ForegroundColor Green
-
-            # Check if there are any changes to commit
-            $status = git status --porcelain
-            if ($status) {
-                # Commit with the message and optional flags
-                $commitCommand = "git commit -m '$message' $flags"
-
-                # Run the commit command
-                Invoke-Expression $commitCommand
-
-                # Display commit success message in green
-                Write-Host "Commit successful!" -ForegroundColor Green
-            } else {
-                Write-Host "No changes to commit. Working tree is clean." -ForegroundColor Yellow
+        if ($param -eq 'ls') {
+            # List all branches with numbers and style
+            $branches = git branch --list
+            Write-Host "`nBranches:" -ForegroundColor Cyan
+            $branches.Split("`n") | ForEach-Object { 
+                $index = [Array]::IndexOf($branches.Split("`n"), $_) + 1
+                # Style the branch names with different colors
+                $branchName = $_.Trim()
+                if ($branchName -match '\*') {
+                    # Current branch (marked with *) styled in Green
+                    Write-Host "$index. $branchName" -ForegroundColor Green
+                }
+                else {
+                    # Other branches styled in White
+                    Write-Host "$index. $branchName" -ForegroundColor White
+                }
             }
-        } else {
-            Write-Host "Failed to stage files for commit" -ForegroundColor Red
+        }
+        else {
+            # Get the current branch
+            $currentBranch = git rev-parse --abbrev-ref HEAD
+            Write-Host "Current branch: " -NoNewline
+            Write-Host "$currentBranch" -ForegroundColor Green
         }
 
         # Remove the function after execution
-        Remove-Item Function:\commit -ErrorAction SilentlyContinue
+        Remove-Item Function:\branch -ErrorAction SilentlyContinue
+        Remove-Item Function:\br -ErrorAction SilentlyContinue
     }
 
     # Replace itself with the actual function after first execution
-    Set-Item Function:\commit ${function:commit}
-    commit @args
+    Set-Item Function:\branch ${function:branch}
+    Set-Alias -Name br -Value branch
+    branch @args
 }
 
 # Register the proxy function in the global scope
-Set-Item Function:\commit $LazyCommitFunction
+Set-Item Function:\branch $LazyBranchFunction
+Set-Alias -Name br -Value branch

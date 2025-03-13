@@ -1,30 +1,58 @@
-# Git add all
-function add {
-    git add .
+# Lazy Load Git Add Function
+$LazyAddFunction = {
+    function add {
+        git add .
+        Remove-Item Function:\add -ErrorAction SilentlyContinue
+    }
+    Set-Item Function:\add ${function:add}
+    add @args
 }
+Set-Item Function:\add $LazyAddFunction
 
-# Git stash all
-function stash {
-    git stash -u
+# Lazy Load Git Stash Function
+$LazyStashFunction = {
+    function stash {
+        git stash -u
+        Remove-Item Function:\stash -ErrorAction SilentlyContinue
+    }
+    Set-Item Function:\stash ${function:stash}
+    stash @args
 }
+Set-Item Function:\stash $LazyStashFunction
 
-# Git stash apply
-function apply {
-    git stash apply
+# Lazy Load Git Stash Apply Function
+$LazyApplyFunction = {
+    function apply {
+        git stash apply
+        Remove-Item Function:\apply -ErrorAction SilentlyContinue
+    }
+    Set-Item Function:\apply ${function:apply}
+    apply @args
 }
+Set-Item Function:\apply $LazyApplyFunction
 
-# Git pull main
-function pull {
-    git pull origin main --rebase
+# Lazy Load Git Pull Main Function
+$LazyPullFunction = {
+    function pull {
+        git pull origin main --rebase
+        Remove-Item Function:\pull -ErrorAction SilentlyContinue
+    }
+    Set-Item Function:\pull ${function:pull}
+    pull @args
 }
+Set-Item Function:\pull $LazyPullFunction
 
-# Differ between branch 
-# Default will be compare to main branch
-# Can pass any branch as an argument to comare
-function differ {
-    param (
-        [string]$branch = "main" 
-    )
+# Lazy Load Git Differ Function
+$LazyDifferFunction = {
+    function differ {
+        param (
+            [string]$branch = "main" 
+        )
 
-    git diff $branch
+        git diff $branch
+        Remove-Item Function:\differ -ErrorAction SilentlyContinue
+    }
+    Set-Item Function:\differ ${function:differ}
+    differ @args
 }
+Set-Item Function:\differ $LazyDifferFunction
