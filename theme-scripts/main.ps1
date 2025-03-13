@@ -1,0 +1,1 @@
+. C:\Users\User\PowerShell\custom-scripts\theme-scripts\oh-my-posh.ps1
