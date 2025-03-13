@@ -52,6 +52,9 @@ $LazyDevFunction = {
         if ($Turbo) {
             Remove-Item Env:NEXT_EXPERIMENTAL_TURBOPACK
         }
+
+        # Remove the function after execution
+        Remove-Item Function:\dev -ErrorAction SilentlyContinue
     }
 
     # Replace itself with the actual function after first execution

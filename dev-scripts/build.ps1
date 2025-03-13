@@ -38,10 +38,15 @@ $LazyBuildFunction = {
         } else {
             Write-Host "Neither pnpm, npm, nor yarn is installed." -ForegroundColor Red
         }
+
+        # Remove the function after execution
+        Remove-Item Function:\build -ErrorAction SilentlyContinue
     }
-    
+
+    # Replace itself with the actual function after first execution
     Set-Item Function:\build ${function:build}
     build @args
 }
 
+# Register the proxy function in the global scope
 Set-Item Function:\build $LazyBuildFunction
