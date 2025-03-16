@@ -1,4 +1,3 @@
-# Lazy Load Git Swap Function
 $LazySwapFunction = {
     function swap {
         param (
@@ -33,9 +32,13 @@ $LazySwapFunction = {
             Write-Host "`e[1;36mSwitching to branch '$branch'...`e[0m"
             git switch $branch
         } else {
-            Write-Host "`e[1;31mBranch '$branch' does not exist.`e[0m"
-            Remove-Item Function:\swap -ErrorAction SilentlyContinue
-            return
+            $confirmation = Read-Host "`e[1;33mBranch '$branch' does not exist. Do you want to create it? (Y/n)`e[0m"
+            if ([string]::IsNullOrWhiteSpace($confirmation) -or $confirmation -match "^y(es)?$" -i) {
+                Write-Host "`e[1;36mCreating and switching to branch '$branch'...`e[0m"
+                git switch -c $branch
+            } else {
+                Write-Host "`e[1;31mOperation canceled.`e[0m"
+            }
         }
 
         # Remove function after execution
