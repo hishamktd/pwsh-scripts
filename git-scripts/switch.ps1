@@ -32,7 +32,7 @@ $LazySwapFunction = {
             Write-Host "`e[1;36mSwitching to branch '$branch'...`e[0m"
             git switch $branch
         } else {
-            $confirmation = Read-Host "`e[1;33mBranch '$branch' does not exist. Do you want to create it? (Y/n)`e[0m"
+            $confirmation = Read-Host "`e[1;33mBranch '$branch' does not exist. Do you want to create it? (Y - default/n)`e[0m"
             if ([string]::IsNullOrWhiteSpace($confirmation) -or $confirmation -match "(?i)^y(es)?$") {
                 Write-Host "`e[1;36mCreating and switching to branch '$branch'...`e[0m"
                 git switch -c $branch
