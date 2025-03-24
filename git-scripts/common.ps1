@@ -31,17 +31,6 @@ $LazyApplyFunction = {
 }
 Set-Item Function:\apply $LazyApplyFunction
 
-# Lazy Load Git Pull Main Function
-$LazyPullFunction = {
-    function pull {
-        git pull origin main --rebase
-        Remove-Item Function:\pull -ErrorAction SilentlyContinue
-    }
-    Set-Item Function:\pull ${function:pull}
-    pull @args
-}
-Set-Item Function:\pull $LazyPullFunction
-
 # Lazy Load Git Differ Function
 $LazyDifferFunction = {
     function differ {

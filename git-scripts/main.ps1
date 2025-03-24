@@ -18,3 +18,5 @@
 
 . C:\Users\User\PowerShell\custom-scripts\git-scripts\branch.ps1
 
+. C:\Users\User\PowerShell\custom-scripts\git-scripts\pull.ps1
+
