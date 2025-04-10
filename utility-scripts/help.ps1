@@ -62,8 +62,43 @@ if (-not (Get-Command scripts -ErrorAction SilentlyContinue)) {
             Write-Theme "    search [Name]            - Search for files or folders by name." "Search"
         }
 
+        function Scripts-Update {
+            Write-Theme "Updating Custom-Scripts..." "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+
+            $originalPath = Get-Location
+
+            Write-Theme "Switching to custom scripts..." "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+            Scripts-Path
+
+            Write-Theme "Cloning Custom-Scripts..." "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+
+            pull
+
+            Write-Theme "Updating Profile..." "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+            . $Profile
+
+            Write-Theme "Switching back to original path..." "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+            Write-Theme "" "Title" -ForegroundColor $theme["Highlight"]
+            cd $originalPath
+        }
+
         switch ($command) {
             "help" { Show-Help }
+            "path" { Scripts-Path }
+            "update" { Scripts-Update }
             default { Write-Theme "Unknown command. Use 'scripts help' for available commands." "Highlight" }
         }
 
