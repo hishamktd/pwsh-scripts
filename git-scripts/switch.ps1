@@ -1,7 +1,7 @@
 $LazySwapFunction = {
     function swap {
         param (
-            [string]$branch = ""
+            [string]$branch = "main"
         )
 
         # Ensure Git is installed
