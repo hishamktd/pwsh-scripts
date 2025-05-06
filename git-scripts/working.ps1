@@ -114,24 +114,34 @@ $LazyWorkingFunction = {
         }
 
         # Function to switch to a saved branch by branch number
-        function Switch-Branch {
-            if (Test-Path $filePath) {
-                $branches = Get-Content $filePath
-                if ($args[0] -match '^\d+$') {
-                    $branchIndex = [int]$args[0] - 1
-                    if ($branchIndex -ge 0 -and $branchIndex -lt $branches.Count) {
-                        $targetBranch = $branches[$branchIndex]
-                        Write-Host "Switching to branch '$targetBranch'..." -ForegroundColor Green
-                        git checkout $targetBranch
-                    } else {
-                        Write-Host "Invalid branch number." -ForegroundColor Red
-                    }
-                } else {
-                    Write-Host "Please provide a valid branch number." -ForegroundColor Red
-                }
-            } else {
+       function Switch-Branch {
+            param([string]$index)
+
+            if (!(Test-Path $filePath)) {
                 Write-Host "No branches saved for this project." -ForegroundColor DarkYellow
+                return
             }
+
+            # Read file explicitly as string array
+            $branchList = [string[]](Get-Content -Path $filePath)
+
+            if ($index -notmatch '^\d+$') {
+                Write-Host "Please provide a valid branch number." -ForegroundColor Red
+                return
+            }
+
+            $branchIndex = [int]$index - 1
+
+            if ($branchIndex -lt 0 -or $branchIndex -ge $branchList.Length) {
+                Write-Host "Invalid branch number." -ForegroundColor Red
+                return
+            }
+
+            $targetBranch = [string]$branchList[$branchIndex]
+            $targetBranch = $targetBranch.Trim()
+
+            Write-Host "Switching to branch '$targetBranch'..." -ForegroundColor Green
+            git checkout $targetBranch
         }
 
         # Function to display usage instructions
