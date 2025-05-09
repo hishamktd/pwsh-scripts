@@ -29,30 +29,34 @@ Example:
     $basePath = Get-Location
     $files = Get-ChildItem -Path $basePath -Recurse -File
 
-    if ($onlyFolder.Count -gt 0) {
-        $files = $files | Where-Object {
-            $relativePath = $_.FullName.Substring($basePath.Path.Length)
-            $onlyFolder -contains ($relativePath -split '[\\/]' | Where-Object { $_ })[0]
-        }
-    }
+    # Normalize all folder names to lower for comparison
+    $avoidFolder = $avoidFolder | ForEach-Object { $_.ToLower() }
+    $onlyFolder  = $onlyFolder  | ForEach-Object { $_.ToLower() }
+    $avoidFile   = $avoidFile   | ForEach-Object { $_.ToLower() }
+    $onlyFile    = $onlyFile    | ForEach-Object { $_.ToLower() }
 
-    if ($avoidFolder.Count -gt 0) {
-        $files = $files | Where-Object {
-            $relativePath = $_.FullName.Substring($basePath.Path.Length)
-            -not ($avoidFolder | Where-Object { $relativePath -like "*$_*" })
-        }
-    }
+    $files = $files | Where-Object {
+        $fullPath = $_.FullName.ToLower()
 
-    if ($onlyFile.Count -gt 0) {
-        $files = $files | Where-Object {
-            $onlyFile -contains $_.Extension.TrimStart('.')
+        $folderOk = $true
+        if ($avoidFolder.Count -gt 0) {
+            $folderOk = -not ($avoidFolder | Where-Object { $fullPath -like "*\$_\*" })
         }
-    }
+        if ($onlyFolder.Count -gt 0) {
+            $folderOk = ($onlyFolder | Where-Object { $fullPath -like "*\$_\*" }) -ne $null
+        }
 
-    if ($avoidFile.Count -gt 0) {
-        $files = $files | Where-Object {
-            -not ($avoidFile -contains $_.Extension.TrimStart('.'))
+        $ext = $_.Extension.TrimStart('.').ToLower()
+
+        $fileExtOk = $true
+        if ($avoidFile.Count -gt 0) {
+            $fileExtOk = -not ($avoidFile -contains $ext)
         }
+        if ($onlyFile.Count -gt 0) {
+            $fileExtOk = ($onlyFile -contains $ext)
+        }
+
+        return $folderOk -and $fileExtOk
     }
 
     Write-Output $files.Count
