@@ -1,18 +1,34 @@
 function count-file {
     param(
+        [Parameter(Mandatory = $false)]
+        [switch]$Help,
+
         [string[]]$avoidFolder = @(),
         [string[]]$avoidFile = @(),
         [string[]]$onlyFolder = @(),
         [string[]]$onlyFile = @()
     )
 
-    # Normalize paths
-    $basePath = Get-Location
+    if ($Help) {
+        Write-Host @"
+Usage: count-file [options]
 
-    # Get all files recursively
+Options:
+  --avoid-folder <list>   Exclude folders by name (e.g., '.git', 'node_modules')
+  --avoid-file <list>     Exclude files by extension (e.g., 'js', 'jsx')
+  --only-folder <list>    Only include folders by name (e.g., 'src', 'apps')
+  --only-file <list>      Only include files by extension (e.g., 'ts', 'tsx')
+  -Help                   Show this help message
+
+Example:
+  count-file --avoid-folder '.git','node_modules' --avoid-file 'js','jsx' --only-folder 'src','apps' --only-file 'ts','tsx'
+"@
+        return
+    }
+
+    $basePath = Get-Location
     $files = Get-ChildItem -Path $basePath -Recurse -File
 
-    # Filter: only include files in allowed folders (if specified)
     if ($onlyFolder.Count -gt 0) {
         $files = $files | Where-Object {
             $relativePath = $_.FullName.Substring($basePath.Path.Length)
@@ -20,7 +36,6 @@ function count-file {
         }
     }
 
-    # Filter: exclude files in avoid folders
     if ($avoidFolder.Count -gt 0) {
         $files = $files | Where-Object {
             $relativePath = $_.FullName.Substring($basePath.Path.Length)
@@ -28,20 +43,17 @@ function count-file {
         }
     }
 
-    # Filter: only include specific extensions (if specified)
     if ($onlyFile.Count -gt 0) {
         $files = $files | Where-Object {
             $onlyFile -contains $_.Extension.TrimStart('.')
         }
     }
 
-    # Filter: exclude specific extensions
     if ($avoidFile.Count -gt 0) {
         $files = $files | Where-Object {
             -not ($avoidFile -contains $_.Extension.TrimStart('.'))
         }
     }
 
-    # Output count
     Write-Output $files.Count
 }
