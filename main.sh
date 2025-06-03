@@ -5,8 +5,19 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-for sub in git-scripts dev-scripts utility-scripts theme-scripts path-scripts; do
-  if [ -f "$SCRIPT_DIR/$sub/main.sh" ]; then
-    source "$SCRIPT_DIR/$sub/main.sh"
-  fi
-done
+# Check if main.sh exists in the subdirectory before sourcing
+if [ -f "$SCRIPT_DIR/utility-scripts/main.sh" ]; then
+  source "$SCRIPT_DIR/utility-scripts/main.sh"
+fi
+if [ -f "$SCRIPT_DIR/git-scripts/main.sh" ]; then
+  source "$SCRIPT_DIR/git-scripts/main.sh"
+fi
+if [ -f "$SCRIPT_DIR/dev-scripts/main.sh" ]; then
+  source "$SCRIPT_DIR/dev-scripts/main.sh"
+fi
+if [ -f "$SCRIPT_DIR/theme-scripts/main.sh" ]; then
+  source "$SCRIPT_DIR/theme-scripts/main.sh"
+fi
+if [ -f "$SCRIPT_DIR/path-scripts/main.sh" ]; then
+  source "$SCRIPT_DIR/path-scripts/main.sh"
+fi

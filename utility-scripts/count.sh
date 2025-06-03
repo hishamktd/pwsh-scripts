@@ -52,10 +52,7 @@ EOF
     esac
   done
 
-  # ... (rest of your counting logic goes here)
-}
-done
-
+  
 count=0
 
 # Find files recursively
@@ -100,3 +97,5 @@ while IFS= read -r -d '' file; do
 done < <(find . -type f -print0)
 
 echo "Total files: $count"
+
+}

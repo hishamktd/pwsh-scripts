@@ -1,7 +1,7 @@
 #!/bin/bash
 # Usage: Source this file to load the help function, then run help to display help.
 
-help() {
+script-help() {
   cat <<EOF
 Usage: Custom-Scripts [command] [options]
 
