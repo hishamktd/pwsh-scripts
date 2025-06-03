@@ -1,10 +1,13 @@
-# PowerShell Custom Scripts
+# PowerShell & Bash Custom Scripts
 
-A collection of PowerShell scripts to enhance your development workflow with useful commands and shortcuts.
+A collection of PowerShell **and** Bash scripts to enhance your development workflow with useful commands and shortcuts. Every PowerShell script has a corresponding Bash equivalent for cross-platform compatibility.
 
 ## 📋 Table of Contents
+
+> **Note:** All scripts are available in both PowerShell (`*.ps1`) and Bash (`*.sh`). Use the version appropriate for your shell and OS.
 - [Features](#-features)
-- [Setup](#-setup)
+- [Setup (PowerShell)](#-setup-powershell)
+- [Setup (Bash)](#-setup-bash)
 - [Documentation](#-documentation)
 - [Script Categories](#-script-categories)
 - [Requirements](#-requirements)
@@ -12,12 +15,13 @@ A collection of PowerShell scripts to enhance your development workflow with use
 
 ## ✨ Features
 
-- **Lazy loading**: Commands load only when first used
+- **Lazy loading**: Commands load only when first used (PowerShell)
 - **Consistent interface**: Standardized parameter names and help
 - **Cross-platform**: Works on Windows, macOS, and Linux
+- **Bash & PowerShell parity**: Every PowerShell script has a Bash equivalent with matching functionality
 - **Documentation**: Comprehensive help and examples for all commands
 
-## 🚀 Setup
+## 🚀 Setup (PowerShell)
 
 ### Prerequisites
 - PowerShell 7.0 or later
@@ -50,6 +54,39 @@ A collection of PowerShell scripts to enhance your development workflow with use
    
    # Show help
    scripts help
+   ```
+
+## 🚀 Setup (Bash)
+
+### Prerequisites
+- Bash 4.0+ (Linux, macOS, or Windows with WSL/Git Bash)
+- Git (for version control)
+
+### Installation
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/yourusername/pwsh-scripts.git
+   cd pwsh-scripts
+   ```
+
+2. **Add to your shell profile** (e.g., `~/.bashrc`, `~/.zshrc`):
+   ```bash
+   # Load custom Bash scripts
+   source /path/to/pwsh-scripts/main.sh
+   ```
+
+3. **Reload your profile**:
+   ```bash
+   source ~/.bashrc
+   # or for zsh
+   source ~/.zshrc
+   ```
+
+4. **Verify installation**:
+   ```bash
+   # List available commands (see utility-scripts/help.sh for details)
+   bash utility-scripts/help.sh
    ```
 
 ## 📚 Documentation

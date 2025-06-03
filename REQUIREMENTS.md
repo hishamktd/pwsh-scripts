@@ -4,13 +4,14 @@ This document outlines the requirements and guidelines for developing and mainta
 
 ## Documentation Requirements
 
-### 1. Documentation Updates
-- [ ] **Mandatory**: Update documentation when:
-  - Adding a new script
-  - Modifying script behavior
-  - Adding, removing, or changing parameters
-  - Fixing significant bugs
-  - Changing dependencies or requirements
+### 1. Documentation & Script Parity Updates
+- [ ] **Mandatory**: Update documentation and corresponding scripts when:
+  - Adding a new script (create both PowerShell and Bash equivalents)
+  - Modifying script behavior (update both PowerShell and Bash scripts to keep them in sync)
+  - Adding, removing, or changing parameters (update both versions)
+  - Fixing significant bugs (apply fixes to both versions)
+  - Changing dependencies or requirements (update both versions)
+  - **Whenever a script is changed, its corresponding Bash or PowerShell equivalent must also be updated to maintain parity.**
 
 ### 2. Documentation Structure
 Each script's documentation must include:
