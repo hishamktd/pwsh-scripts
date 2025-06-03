@@ -5,7 +5,7 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-for sub in git-scripts dev-scripts utility-scripts theme-scripts; do
+for sub in git-scripts dev-scripts utility-scripts theme-scripts path-scripts; do
   if [ -f "$SCRIPT_DIR/$sub/main.sh" ]; then
     source "$SCRIPT_DIR/$sub/main.sh"
   fi
