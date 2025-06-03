@@ -1,5 +1,5 @@
 #!/bin/bash
-# Bash equivalents for common Git helper functions
+# Usage: Source this file to load helper git functions: add, stash, apply, differ. Only function definitions are present.
 
 add() {
   git add .

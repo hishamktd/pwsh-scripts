@@ -1,8 +1,8 @@
 #!/bin/bash
-# Bash equivalent of help.ps1 for Custom-Scripts
+# Usage: Source this file to load the help function, then run help to display help.
 
-show_help() {
-cat <<EOF
+help() {
+  cat <<EOF
 Usage: Custom-Scripts [command] [options]
 
 Commands:
@@ -45,7 +45,3 @@ Commands:
 Use '<command> help' for more details on a specific command.
 EOF
 }
-
-if [[ "$1" == "help" || "$1" == "--help" || "$1" == "-h" ]]; then
-  show_help
-fi

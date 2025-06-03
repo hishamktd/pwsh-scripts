@@ -1,38 +1,39 @@
 #!/bin/bash
-# Bash equivalent of dev.ps1
+# Usage: Source this file to load the dev function, then run dev to start your dev environment.
 
-RED='\033[0;31m'
-CYAN='\033[0;36m'
-MAGENTA='\033[0;35m'
-NC='\033[0m'
+dev() {
+  RED='\033[0;31m'
+  CYAN='\033[0;36m'
+  MAGENTA='\033[0;35m'
+  NC='\033[0m'
 
-TURBO=false
+  TURBO=false
 
-# Parse arguments
-for arg in "$@"; do
-  case $arg in
-    -Turbo|--Turbo)
-      TURBO=true
-      ;;
-  esac
-done
+  # Parse arguments
+  for arg in "$@"; do
+    case $arg in
+      -Turbo|--Turbo)
+        TURBO=true
+        ;;
+    esac
+  done
 
-if [ ! -f package.json ]; then
-  echo -e "${RED}No package.json found. Please ensure you are in a valid project directory.${NC}"
-  exit 1
-fi
+  if [ ! -f package.json ]; then
+    echo -e "${RED}No package.json found. Please ensure you are in a valid project directory.${NC}"
+    return 1
+  fi
 
-if [ ! -d node_modules ]; then
-  echo -e "${RED}No node_modules directory found. Run 'npm install' or 'pnpm install' first.${NC}"
-  exit 1
-fi
+  if [ ! -d node_modules ]; then
+    echo -e "${RED}No node_modules directory found. Run 'npm install' or 'pnpm install' first.${NC}"
+    return 1
+  fi
 
-if ! command -v jq >/dev/null 2>&1; then
-  echo -e "${RED}jq is required for this script. Please install jq.${NC}"
-  exit 1
-fi
+  if ! command -v jq >/dev/null 2>&1; then
+    echo -e "${RED}jq is required for this script. Please install jq.${NC}"
+    return 1
+  fi
 
-if ! jq -e '.scripts.dev' package.json >/dev/null; then
+  if ! jq -e '.scripts.dev' package.json >/dev/null; then
   echo -e "${RED}'dev' script is missing in package.json.${NC}"
   exit 1
 fi
@@ -60,3 +61,4 @@ fi
 if $TURBO; then
   unset NEXT_EXPERIMENTAL_TURBOPACK
 fi
+}

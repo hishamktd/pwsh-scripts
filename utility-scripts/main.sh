@@ -1,9 +1,12 @@
 #!/bin/bash
-# Bash equivalent of utility-scripts main.ps1
+# Usage: Source this file to load all utility script functions without executing any commands.
+# After sourcing, all functions from individual utility scripts will be available to call directly.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Source all utility scripts
-for script in "$SCRIPT_DIR"/*.sh; do
-  [ "$script" != "$SCRIPT_DIR/main.sh" ] && source "$script"
+# Source specific utility scripts to make their functions available
+for script in common.sh count.sh help.sh reload.sh search.sh; do
+  if [ -f "$SCRIPT_DIR/$script" ]; then
+    source "$SCRIPT_DIR/$script"
+  fi
 done

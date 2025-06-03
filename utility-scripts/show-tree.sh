@@ -1,5 +1,5 @@
 #!/bin/bash
-# Bash equivalent of show-tree.ps1
+# Usage: Source this file to load the show_tree function, then run show_tree to display the directory tree.
 
 show_tree() {
   local path="${1:-.}"
@@ -21,5 +21,3 @@ show_tree() {
     show_tree "$item" "$2" $((indent + 3))
   done
 }
-
-show_tree "$@"

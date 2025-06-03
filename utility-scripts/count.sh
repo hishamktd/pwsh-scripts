@@ -1,9 +1,10 @@
 #!/bin/bash
-# Bash equivalent of count.ps1
+# Usage: Source this file to load the count_files function, then run count_files to count files with filters.
 
-show_help() {
-  cat << EOF
-Usage: count.sh [options]
+count() {
+  show_help() {
+    cat << EOF
+Usage: count_files [options]
 
 Options:
   --avoid-folder <name1,name2,...>   Exclude folders by name (e.g., .git,node_modules)
@@ -12,43 +13,47 @@ Options:
   --only-file <ext1,ext2,...>        Only include files with these extensions (e.g., ts,tsx)
   -h, --help                         Show this help message
 EOF
+  }
+
+  # Default values
+  avoid_folder=()
+  avoid_file=()
+  only_folder=()
+  only_file=()
+
+  # Parse arguments
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      --avoid-folder)
+        IFS=',' read -r -a avoid_folder <<< "$2"
+        shift 2
+        ;;
+      --avoid-file)
+        IFS=',' read -r -a avoid_file <<< "$2"
+        shift 2
+        ;;
+      --only-folder)
+        IFS=',' read -r -a only_folder <<< "$2"
+        shift 2
+        ;;
+      --only-file)
+        IFS=',' read -r -a only_file <<< "$2"
+        shift 2
+        ;;
+      -h|--help)
+        show_help
+        return 0
+        ;;
+      *)
+        echo "Unknown option: $1"
+        show_help
+        return 1
+        ;;
+    esac
+  done
+
+  # ... (rest of your counting logic goes here)
 }
-
-# Default values
-avoid_folder=()
-avoid_file=()
-only_folder=()
-only_file=()
-
-# Parse arguments
-while [[ $# -gt 0 ]]; do
-  case $1 in
-    --avoid-folder)
-      IFS=',' read -r -a avoid_folder <<< "$2"
-      shift 2
-      ;;
-    --avoid-file)
-      IFS=',' read -r -a avoid_file <<< "$2"
-      shift 2
-      ;;
-    --only-folder)
-      IFS=',' read -r -a only_folder <<< "$2"
-      shift 2
-      ;;
-    --only-file)
-      IFS=',' read -r -a only_file <<< "$2"
-      shift 2
-      ;;
-    -h|--help)
-      show_help
-      exit 0
-      ;;
-    *)
-      echo "Unknown option: $1"
-      show_help
-      exit 1
-      ;;
-  esac
 done
 
 count=0

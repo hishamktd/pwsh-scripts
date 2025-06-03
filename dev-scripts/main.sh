@@ -1,4 +1,5 @@
 #!/bin/bash
+# Usage: Source this file to load all dev-scripts functions into your shell. Does not run any logic.
 # Bash equivalent of main.ps1 for dev-scripts
 # Sources all dev-scripts Bash utilities
 
