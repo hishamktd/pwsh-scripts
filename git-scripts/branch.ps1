@@ -2,41 +2,41 @@
 $LazyBranchFunction = {
     function branch {
         param (
-            [string]$param
+            [switch]$ls,
+            [switch]$r
         )
 
-        if ($param -eq 'ls') {
-            # List all branches with numbers and style
-            $branches = git branch --list
+        if ($ls -or $r) {
+            $branches = if ($r) {
+                git branch --list -r
+            } else {
+                git branch --list
+            }
+
             Write-Host "`nBranches:" -ForegroundColor Cyan
             $branchList = ""
+            $branchLines = $branches -split "`r?`n"
 
-            $branches.Split("`n") | ForEach-Object { 
-                $index = [Array]::IndexOf($branches.Split("`n"), $_) + 1
-                $branchName = $_.Trim()
-                $branchList += "$index. $branchName`n"
+            for ($i = 0; $i -lt $branchLines.Count; $i++) {
+                $branchName = $branchLines[$i].Trim()
+                $lineNumber = $i + 1
+                $branchList += "$lineNumber. $branchName`n"
 
-                if ($branchName -match '\*') {
-                    # Current branch (marked with *) styled in Green
-                    Write-Host "$index. $branchName" -ForegroundColor Green
-                }
-                else {
-                    # Other branches styled in White
-                    Write-Host "$index. $branchName" -ForegroundColor White
+                if ($branchName -match '^\*') {
+                    Write-Host "$lineNumber. $branchName" -ForegroundColor Green
+                } else {
+                    Write-Host "$lineNumber. $branchName" -ForegroundColor White
                 }
             }
 
-            # Copy branch list to clipboard
             $branchList | Set-Clipboard
             Write-Host "`nBranch list copied to clipboard!" -ForegroundColor Yellow
         }
         else {
-            # Get the current branch
             $currentBranch = git rev-parse --abbrev-ref HEAD
             Write-Host "Current branch: " -NoNewline
             Write-Host "$currentBranch" -ForegroundColor Green
 
-            # Copy current branch name to clipboard
             $currentBranch | Set-Clipboard
             Write-Host "`nBranch name copied to clipboard!" -ForegroundColor Yellow
         }
@@ -46,12 +46,14 @@ $LazyBranchFunction = {
         Remove-Item Function:\br -ErrorAction SilentlyContinue
     }
 
-    # Replace itself with the actual function after first execution
+    # Register the function and alias
     Set-Item Function:\branch ${function:branch}
     Set-Alias -Name br -Value branch
+
+    # Call it immediately with passed arguments
     branch @args
 }
 
-# Register the proxy function in the global scope
+# Register the proxy in global scope
 Set-Item Function:\branch $LazyBranchFunction
 Set-Alias -Name br -Value branch
