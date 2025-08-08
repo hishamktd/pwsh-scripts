@@ -5,7 +5,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Source specific utility scripts to make their functions available
-for script in common.sh count.sh help.sh reload.sh search.sh greetings.sh; do
+for script in common.sh count.sh help.sh reload.sh search.sh; do
   if [ -f "$SCRIPT_DIR/$script" ]; then
     source "$SCRIPT_DIR/$script"
   fi
