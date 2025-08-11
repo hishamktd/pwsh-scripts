@@ -13,3 +13,5 @@
 # . C:\Users\User\PowerShell\custom-scripts\utility-scripts\greetings.ps1
 
 . C:\Users\User\PowerShell\custom-scripts\utility-scripts\say.ps1
+
+. C:\Users\User\PowerShell\custom-scripts\utility-scripts\size.ps1
